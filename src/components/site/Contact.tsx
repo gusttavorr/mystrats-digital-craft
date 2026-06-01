@@ -5,7 +5,7 @@ const WHATSAPP_URL = "https://wa.me/5511982975044?text=Ol%C3%A1!%20Vim%20pelo%20
 
 export function Contact() {
   return (
-    <section id="contato" className="relative section-gradient-3 py-32">
+    <section id="contato" className="relative sand-flow sand-flow--br py-32">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono-tech text-xs uppercase tracking-[0.3em] text-muted-foreground">
