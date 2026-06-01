@@ -22,7 +22,7 @@ export function Testimonials() {
   }, [paused]);
 
   return (
-    <section id="depoimentos" className="relative section-gradient-2 py-32">
+    <section id="depoimentos" className="relative sand-flow sand-flow--tl py-32">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono-tech text-xs uppercase tracking-[0.3em] text-muted-foreground">
