@@ -1,17 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
-const CLIPS = [
-  "/mystrats-cena-02.mp4",
-  "/mystrats-cena-03.mp4",
-  "/mystrats-cena-04.mp4",
-];
+const VIDEO_SRC = "/mystrats-showreel.mp4";
 
 export function VideoReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  // Start at a random clip so reloads don't always show the same opening
-  const [index, setIndex] = useState(() => Math.floor(Math.random() * CLIPS.length));
-  const [fading, setFading] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -30,21 +24,6 @@ export function VideoReveal() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
-
-  const handleEnded = () => {
-    setFading(true);
-    window.setTimeout(() => {
-      setIndex((i) => (i + 1) % CLIPS.length);
-      setFading(false);
-    }, 350);
-  };
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.load();
-    v.play().catch(() => {});
-  }, [index]);
 
   return (
     <section
@@ -65,16 +44,17 @@ export function VideoReveal() {
           <div className="video-reveal__frame">
             <video
               ref={videoRef}
-              key={CLIPS[index]}
-              className="h-full w-full object-cover transition-opacity duration-500"
-              style={{ opacity: fading ? 0 : 1 }}
+              className="h-full w-full object-cover transition-opacity duration-700"
+              style={{ opacity: ready ? 1 : 0 }}
               autoPlay
+              loop
               muted
               playsInline
               preload="auto"
-              onEnded={handleEnded}
+              onCanPlayThrough={() => setReady(true)}
+              onLoadedData={() => setReady(true)}
             >
-              <source src={CLIPS[index]} type="video/mp4" />
+              <source src={VIDEO_SRC} type="video/mp4" />
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
