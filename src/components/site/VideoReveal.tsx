@@ -1,7 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const CLIPS = [
+  "/mystrats-cena-02.mp4",
+  "/mystrats-cena-03.mp4",
+  "/mystrats-cena-04.mp4",
+];
 
 export function VideoReveal() {
   const ref = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  // Start at a random clip so reloads don't always show the same opening
+  const [index, setIndex] = useState(() => Math.floor(Math.random() * CLIPS.length));
+  const [fading, setFading] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -21,6 +31,21 @@ export function VideoReveal() {
     return () => io.disconnect();
   }, []);
 
+  const handleEnded = () => {
+    setFading(true);
+    window.setTimeout(() => {
+      setIndex((i) => (i + 1) % CLIPS.length);
+      setFading(false);
+    }, 350);
+  };
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.load();
+    v.play().catch(() => {});
+  }, [index]);
+
   return (
     <section
       id="reel"
@@ -39,14 +64,17 @@ export function VideoReveal() {
         <div ref={ref} className="video-reveal group relative mx-auto aspect-video w-full">
           <div className="video-reveal__frame">
             <video
-              className="h-full w-full object-cover"
+              ref={videoRef}
+              key={CLIPS[index]}
+              className="h-full w-full object-cover transition-opacity duration-500"
+              style={{ opacity: fading ? 0 : 1 }}
               autoPlay
               muted
-              loop
               playsInline
-              preload="metadata"
+              preload="auto"
+              onEnded={handleEnded}
             >
-              <source src="/mystrats-apresentacao.mp4" type="video/mp4" />
+              <source src={CLIPS[index]} type="video/mp4" />
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
