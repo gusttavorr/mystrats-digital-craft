@@ -66,7 +66,7 @@ export function Portfolio() {
   );
 
   return (
-    <section id="portfolio" className="relative sand-flow sand-flow--l py-32">
+    <section id="portfolio" className="relative sand-flow sand-flow--l py-20 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>

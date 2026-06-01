@@ -5,11 +5,11 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 export function Hero() {
   return (
-    <section id="top" className="relative min-h-screen overflow-hidden gradient-radial-fade grain pt-32">
+    <section id="top" className="relative min-h-screen overflow-hidden gradient-radial-fade grain pt-24 md:pt-32">
       <div className="absolute inset-0 grid-bg opacity-50" />
       <ParticlesBackground />
 
-      <div className="relative mx-auto flex max-w-7xl flex-col items-start px-6 pb-32 pt-12 md:pt-24">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-start px-6 pb-20 pt-8 md:pb-32 md:pt-12 md:pt-24">
         <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 backdrop-blur">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-foreground" />
           <span className="font-mono-tech text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -47,7 +47,7 @@ export function Hero() {
           </a>
         </div>
 
-        <div className="mt-24 grid w-full grid-cols-3 gap-6 border-t border-border pt-8">
+        <div className="mt-16 grid w-full grid-cols-3 md:mt-24 gap-6 border-t border-border pt-8">
           {[
             { n: 47, s: "+", l: "Projetos entregues" },
             { n: 5, s: "+", l: "Anos de mercado" },
