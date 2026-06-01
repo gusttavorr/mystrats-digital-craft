@@ -8,7 +8,7 @@ const values = [
 
 export function About() {
   return (
-    <section id="sobre" className="relative sand-flow sand-flow--br py-32">
+    <section id="sobre" className="relative sand-flow sand-flow--br py-20 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono-tech text-xs uppercase tracking-[0.3em] text-muted-foreground">

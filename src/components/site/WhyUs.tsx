@@ -11,7 +11,7 @@ const items = [
 
 export function WhyUs() {
   return (
-    <section id="por-que" className="relative sand-flow sand-flow--bu py-32">
+    <section id="por-que" className="relative sand-flow sand-flow--bu py-20 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono-tech text-xs uppercase tracking-[0.3em] text-muted-foreground">
