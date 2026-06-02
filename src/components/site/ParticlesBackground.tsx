@@ -70,7 +70,7 @@ export function ParticlesBackground() {
           const d2 = dx * dx + dy * dy;
           if (d2 < 13000) {
             const o = 1 - d2 / 13000;
-            ctx.strokeStyle = `rgba(255,255,255,${o * 0.12})`;
+            ctx.strokeStyle = `rgba(0,72,255,${o * 0.22})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -81,7 +81,7 @@ export function ParticlesBackground() {
       }
 
       // dots
-      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.fillStyle = "rgba(0,82,255,0.9)";
       for (const p of parts) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
