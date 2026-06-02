@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-const VIDEO_SRC = "/mystrats-showreel.mp4";
+const VIDEO_POSTER = "/mystrats-showreel-poster.jpg";
+const VIDEO_MOBILE = "/mystrats-showreel-720.mp4";
+const VIDEO_DESKTOP = "/mystrats-showreel-1080.mp4";
 
 export function VideoReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -44,17 +46,19 @@ export function VideoReveal() {
           <div className="video-reveal__frame">
             <video
               ref={videoRef}
-              className="h-full w-full object-cover transition-opacity duration-700"
+              className="h-full w-full object-cover transition-opacity duration-700 [backface-visibility:hidden]"
               style={{ opacity: ready ? 1 : 0 }}
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
+              poster={VIDEO_POSTER}
               onCanPlayThrough={() => setReady(true)}
               onLoadedData={() => setReady(true)}
             >
-              <source src={VIDEO_SRC} type="video/mp4" />
+              <source src={VIDEO_MOBILE} type="video/mp4" media="(max-width: 767px)" />
+              <source src={VIDEO_DESKTOP} type="video/mp4" />
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>

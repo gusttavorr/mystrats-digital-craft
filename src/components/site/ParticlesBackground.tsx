@@ -10,6 +10,7 @@ export function ParticlesBackground() {
     if (!ctx) return;
 
     let raf = 0;
+    let visible = true;
     let w = 0, h = 0, dpr = 1;
     const mouse = { x: -1000, y: -1000 };
 
@@ -40,6 +41,11 @@ export function ParticlesBackground() {
     const onLeave = () => { mouse.x = -1000; mouse.y = -1000; };
 
     const draw = () => {
+      if (!visible) {
+        raf = 0;
+        return;
+      }
+
       ctx.clearRect(0, 0, w, h);
 
       for (const p of parts) {
@@ -70,7 +76,7 @@ export function ParticlesBackground() {
           const d2 = dx * dx + dy * dy;
           if (d2 < 13000) {
             const o = 1 - d2 / 13000;
-            ctx.strokeStyle = `rgba(255,255,255,${o * 0.12})`;
+            ctx.strokeStyle = `rgba(0,72,255,${o * 0.22})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -81,7 +87,7 @@ export function ParticlesBackground() {
       }
 
       // dots
-      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.fillStyle = "rgba(0,82,255,0.9)";
       for (const p of parts) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
@@ -93,11 +99,17 @@ export function ParticlesBackground() {
 
     resize();
     draw();
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && raf === 0) draw();
+    });
+    io.observe(canvas);
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
