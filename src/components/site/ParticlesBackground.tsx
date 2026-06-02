@@ -10,6 +10,7 @@ export function ParticlesBackground() {
     if (!ctx) return;
 
     let raf = 0;
+    let visible = true;
     let w = 0, h = 0, dpr = 1;
     const mouse = { x: -1000, y: -1000 };
 
@@ -40,6 +41,11 @@ export function ParticlesBackground() {
     const onLeave = () => { mouse.x = -1000; mouse.y = -1000; };
 
     const draw = () => {
+      if (!visible) {
+        raf = 0;
+        return;
+      }
+
       ctx.clearRect(0, 0, w, h);
 
       for (const p of parts) {
@@ -93,11 +99,17 @@ export function ParticlesBackground() {
 
     resize();
     draw();
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && raf === 0) draw();
+    });
+    io.observe(canvas);
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
