@@ -7,7 +7,17 @@ const VIDEO_DESKTOP = "/mystrats-showreel-smooth.mp4";
 export function VideoReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoSrc, setVideoSrc] = useState(VIDEO_DESKTOP);
   const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const syncSource = () => setVideoSrc(media.matches ? VIDEO_MOBILE : VIDEO_DESKTOP);
+
+    syncSource();
+    media.addEventListener("change", syncSource);
+    return () => media.removeEventListener("change", syncSource);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -25,7 +35,15 @@ export function VideoReveal() {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [videoSrc]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    setReady(false);
+    video.load();
+    void video.play().catch(() => undefined);
+  }, [videoSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -82,14 +100,12 @@ export function VideoReveal() {
               playsInline
               preload="auto"
               poster={VIDEO_POSTER}
+              src={videoSrc}
               onCanPlay={handlePlayable}
               onLoadedData={handlePlayable}
               onStalled={handlePlayable}
               onWaiting={handlePlayable}
-            >
-              <source src={VIDEO_MOBILE} type="video/mp4" media="(max-width: 767px)" />
-              <source src={VIDEO_DESKTOP} type="video/mp4" />
-            </video>
+            />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
           <div className="video-reveal__glow" aria-hidden />
