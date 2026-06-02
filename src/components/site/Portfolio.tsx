@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { Reveal } from "./Reveal";
 import { ArrowUpRight } from "lucide-react";
 
@@ -104,11 +104,11 @@ export function Portfolio() {
 
         <div className="mt-16 grid auto-rows-[minmax(0,1fr)] grid-cols-1 gap-5 md:grid-cols-4">
           {list.map((p, i) => (
-            <Reveal key={p.title + filter} delay={i * 60} className={p.span}>
+            <Reveal key={p.title + filter} delay={i * 80} className={p.span}>
               <a
                 href="#contato"
                 className="portfolio-scan-card group relative block h-full overflow-hidden rounded-2xl border border-border bg-card"
-                style={{ "--portfolio-delay": `${i * 80}ms` } as React.CSSProperties}
+                style={{ "--portfolio-delay": `${i * 80}ms` } as CSSProperties}
               >
                 <div className={`${p.ratio} w-full overflow-hidden`}>
                   <img
