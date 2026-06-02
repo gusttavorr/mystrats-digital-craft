@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 const VIDEO_POSTER = "/mystrats-showreel-poster.jpg";
-const VIDEO_MOBILE = "/mystrats-showreel-720.mp4";
-const VIDEO_DESKTOP = "/mystrats-showreel-1080.mp4";
+const VIDEO_MOBILE = "/mystrats-showreel-mobile.mp4";
+const VIDEO_DESKTOP = "/mystrats-showreel-smooth.mp4";
 
 export function VideoReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -26,6 +26,34 @@ export function VideoReveal() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const el = ref.current;
+    if (!video || !el) return;
+
+    const play = () => {
+      video.muted = true;
+      void video.play().catch(() => undefined);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) play();
+        else video.pause();
+      },
+      { rootMargin: "180px 0px", threshold: 0.05 }
+    );
+
+    io.observe(el);
+    play();
+    return () => io.disconnect();
+  }, []);
+
+  const handlePlayable = () => {
+    setReady(true);
+    void videoRef.current?.play().catch(() => undefined);
+  };
 
   return (
     <section
@@ -54,8 +82,10 @@ export function VideoReveal() {
               playsInline
               preload="auto"
               poster={VIDEO_POSTER}
-              onCanPlayThrough={() => setReady(true)}
-              onLoadedData={() => setReady(true)}
+              onCanPlay={handlePlayable}
+              onLoadedData={handlePlayable}
+              onStalled={handlePlayable}
+              onWaiting={handlePlayable}
             >
               <source src={VIDEO_MOBILE} type="video/mp4" media="(max-width: 767px)" />
               <source src={VIDEO_DESKTOP} type="video/mp4" />
