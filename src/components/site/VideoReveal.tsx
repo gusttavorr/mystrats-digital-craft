@@ -1,13 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 
 const VIDEO_POSTER = "/mystrats-showreel-poster.jpg";
-const VIDEO_MOBILE = "/mystrats-showreel-720.mp4";
-const VIDEO_DESKTOP = "/mystrats-showreel-1080.mp4";
+const VIDEO_MOBILE = "/mystrats-showreel-mobile.mp4";
+const VIDEO_DESKTOP = "/mystrats-showreel-smooth.mp4";
 
 export function VideoReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoSrc, setVideoSrc] = useState(VIDEO_DESKTOP);
   const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const syncSource = () => setVideoSrc(media.matches ? VIDEO_MOBILE : VIDEO_DESKTOP);
+
+    syncSource();
+    media.addEventListener("change", syncSource);
+    return () => media.removeEventListener("change", syncSource);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -25,7 +35,43 @@ export function VideoReveal() {
     );
     io.observe(el);
     return () => io.disconnect();
+  }, [videoSrc]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    setReady(false);
+    video.load();
+    void video.play().catch(() => undefined);
+  }, [videoSrc]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const el = ref.current;
+    if (!video || !el) return;
+
+    const play = () => {
+      video.muted = true;
+      void video.play().catch(() => undefined);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) play();
+        else video.pause();
+      },
+      { rootMargin: "180px 0px", threshold: 0.05 }
+    );
+
+    io.observe(el);
+    play();
+    return () => io.disconnect();
   }, []);
+
+  const handlePlayable = () => {
+    setReady(true);
+    void videoRef.current?.play().catch(() => undefined);
+  };
 
   return (
     <section
@@ -54,12 +100,12 @@ export function VideoReveal() {
               playsInline
               preload="auto"
               poster={VIDEO_POSTER}
-              onCanPlayThrough={() => setReady(true)}
-              onLoadedData={() => setReady(true)}
-            >
-              <source src={VIDEO_MOBILE} type="video/mp4" media="(max-width: 767px)" />
-              <source src={VIDEO_DESKTOP} type="video/mp4" />
-            </video>
+              src={videoSrc}
+              onCanPlay={handlePlayable}
+              onLoadedData={handlePlayable}
+              onStalled={handlePlayable}
+              onWaiting={handlePlayable}
+            />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
           <div className="video-reveal__glow" aria-hidden />

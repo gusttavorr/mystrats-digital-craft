@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { Reveal } from "./Reveal";
 import { ArrowUpRight } from "lucide-react";
 
@@ -78,7 +78,12 @@ export function Portfolio() {
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <div className="flex flex-wrap gap-2">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-foreground/80 backdrop-blur">
+                <span className="portfolio-counter-dot" aria-hidden />
+                {list.length} projetos exibidos
+              </div>
+              <div className="flex flex-wrap gap-2">
               {filters.map((f) => (
                 <button
                   key={f}
@@ -92,16 +97,18 @@ export function Portfolio() {
                   {f}
                 </button>
               ))}
+              </div>
             </div>
           </Reveal>
         </div>
 
         <div className="mt-16 grid auto-rows-[minmax(0,1fr)] grid-cols-1 gap-5 md:grid-cols-4">
           {list.map((p, i) => (
-            <Reveal key={p.title + filter} delay={i * 60} className={p.span}>
+            <Reveal key={p.title + filter} delay={i * 80} className={p.span}>
               <a
                 href="#contato"
-                className="card-hover group relative block h-full overflow-hidden rounded-2xl border border-border bg-card"
+                className="portfolio-scan-card group relative block h-full overflow-hidden rounded-2xl border border-border bg-card"
+                style={{ "--portfolio-delay": `${i * 80}ms` } as CSSProperties}
               >
                 <div className={`${p.ratio} w-full overflow-hidden`}>
                   <img
@@ -111,8 +118,8 @@ export function Portfolio() {
                     className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-95" />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
+                <div className="absolute inset-0 z-[1] bg-gradient-to-t from-background via-background/40 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-95" />
+                <div className="absolute inset-x-0 bottom-0 z-[4] flex items-end justify-between p-6">
                   <div>
                     <p className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                       {p.category}
