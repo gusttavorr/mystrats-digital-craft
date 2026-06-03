@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { MessageSquare, X, Send } from "lucide-react";
+import chatbotAvatar from "@/assets/chatbot-avatar.png";
 
 const WHATSAPP_URL = "https://wa.me/5511982975044?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20MYSTRATS%20e%20gostaria%20de%20um%20or%C3%A7amento.";
 
 type Msg = { from: "bot" | "user"; text: string; cta?: boolean };
 
 const QUICK = [
-  { id: "novo", label: "🌐 Quero um site novo", answer: "Ótima decisão! Criamos sites personalizados do zero. Para receber uma proposta, fale com nossa equipe no WhatsApp." },
-  { id: "custo", label: "💰 Quanto custa um site?", answer: "Nossos projetos variam conforme o escopo. Landing pages a partir de R$ 997. Sites institucionais a partir de R$ 1.997. Solicite uma proposta grátis!" },
+  { id: "novo", label: "🌐 Quero um site novo", answer: "Ótima decisão! Criamos sites personalizados do zero a partir de R$ 500. Para receber uma proposta, fale com nossa equipe no WhatsApp." },
+  { id: "custo", label: "💰 Quanto custa um site?", answer: "Sites profissionais a partir de R$ 500. Gerenciamento completo do site + marketing da empresa a partir de R$ 2.000/mês. Solicite uma proposta grátis!" },
   { id: "prazo", label: "⏱ Qual o prazo de entrega?", answer: "Entregamos em 7 a 21 dias úteis dependendo da complexidade. Você aprova cada etapa antes de publicar." },
   { id: "redesign", label: "🎨 Vocês fazem redesign?", answer: "Sim! Reformulamos sites existentes mantendo seu histórico e melhorando performance, design e conversão." },
   { id: "humano", label: "📲 Quero falar com humano", answer: "Claro! Te direciono direto para nossa equipe agora mesmo." },
@@ -18,6 +19,12 @@ export function Chatbot() {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [showCTA, setShowCTA] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // auto-open on first site entry
+  useEffect(() => {
+    const t = setTimeout(() => setOpen(true), 1500);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -54,11 +61,23 @@ export function Chatbot() {
         <div className="fixed bottom-44 right-6 z-40 flex h-[460px] w-[320px] max-w-[calc(100vw-3rem)] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl animate-slide-up">
           {/* header */}
           <div className="flex items-center justify-between border-b border-border bg-card px-4 py-3">
-            <div>
-              <div className="font-display text-sm font-bold">MYSTRATS — Assistente Digital</div>
-              <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#25D366]" />
-                Online agora
+            <div className="flex items-center gap-3">
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-border bg-popover">
+                <img
+                  src={chatbotAvatar}
+                  alt="Assistente MYSTRATS"
+                  width={40}
+                  height={40}
+                  className="h-full w-full object-cover"
+                />
+                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border border-card bg-[#25D366]" />
+              </div>
+              <div>
+                <div className="font-display text-sm font-bold">MYSTRATS — Assistente Digital</div>
+                <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#25D366]" />
+                  Online agora
+                </div>
               </div>
             </div>
             <button onClick={() => setOpen(false)} aria-label="Fechar" className="text-muted-foreground hover:text-foreground">
