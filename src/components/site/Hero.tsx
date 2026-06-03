@@ -1,4 +1,5 @@
 import { ParticlesBackground } from "./ParticlesBackground";
+import { HolographicSphere } from "./HolographicSphere";
 import { ScrambleText } from "./ScrambleText";
 import { CountUp } from "./CountUp";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -8,6 +9,7 @@ export function Hero() {
     <section id="top" className="relative min-h-screen overflow-hidden gradient-radial-fade grain pt-24 md:pt-32">
       <div className="absolute inset-0 grid-bg opacity-50" />
       <ParticlesBackground />
+      <HolographicSphere />
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-start px-6 pb-20 pt-8 md:pb-32 md:pt-12 md:pt-24">
         <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 backdrop-blur">
