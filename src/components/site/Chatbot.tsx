@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MessageSquare, X, Send } from "lucide-react";
-import chatbotAvatar from "@/assets/chatbot-avatar.png";
+import chatbotAvatarAsset from "@/assets/chatbot-avatar-photo.png.asset.json";
+const chatbotAvatar = chatbotAvatarAsset.url;
 
 const WHATSAPP_URL = "https://wa.me/5511982975044?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20MYSTRATS%20e%20gostaria%20de%20um%20or%C3%A7amento.";
 
