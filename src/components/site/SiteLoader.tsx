@@ -1,15 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 
-const MESSAGES = [
-  "Design Profissional",
-  "Mais conversão",
-  "Mais vendas",
-  "Te Apresentamos a MYSTRATS",
-];
+type Variant = "slide" | "smoke" | "lego" | "zoom";
 
-const LETTER_DELAY = 55;
-const PAUSE_AFTER_MESSAGE = 720;
-const FINAL_PAUSE = 900;
+type Message = {
+  text: string;
+  variant: Variant;
+  letterDelay: number; // ms between each char start
+  charDuration: number; // ms each char takes to fully appear
+  readPause: number; // ms to hold after fully revealed
+};
+
+const MESSAGES: Message[] = [
+  { text: "Design Profissional",         variant: "slide", letterDelay: 70, charDuration: 650, readPause: 1400 },
+  { text: "Mais conversão",              variant: "smoke", letterDelay: 90, charDuration: 900, readPause: 1400 },
+  { text: "Mais vendas",                 variant: "lego",  letterDelay: 95, charDuration: 550, readPause: 1400 },
+  { text: "Te Apresentamos a MYSTRATS",  variant: "zoom",  letterDelay: 60, charDuration: 900, readPause: 2000 },
+];
 
 export function SiteLoader() {
   const [mounted, setMounted] = useState(false);
@@ -26,7 +32,7 @@ export function SiteLoader() {
     if (!mounted || phase !== "loading") return;
 
     const message = MESSAGES[currentIndex];
-    const totalChars = message.length;
+    const totalChars = message.text.length;
 
     setVisibleChars(0);
 
@@ -34,18 +40,21 @@ export function SiteLoader() {
     for (let i = 1; i <= totalChars; i++) {
       const id = window.setTimeout(() => {
         setVisibleChars(i);
-      }, i * LETTER_DELAY);
+      }, i * message.letterDelay);
       timers.current.push(id);
     }
 
-    // After full message + pause, go to next or exit
+    // Wait until every char has FINISHED its animation + a full read pause
+    const totalDuration =
+      totalChars * message.letterDelay + message.charDuration + message.readPause;
+
     const nextId = window.setTimeout(() => {
       if (currentIndex < MESSAGES.length - 1) {
         setCurrentIndex((prev) => prev + 1);
       } else {
         setPhase("exiting");
       }
-    }, totalChars * LETTER_DELAY + PAUSE_AFTER_MESSAGE);
+    }, totalDuration);
     timers.current.push(nextId);
 
     return () => {
@@ -88,14 +97,16 @@ export function SiteLoader() {
     >
       <div className="site-loader__glow" />
       <div className="site-loader__content">
-        <p className={`site-loader__text ${isLast ? "site-loader__text--brand" : ""}`}>
-          {message.split("").map((char, i) => {
+        <p
+          className={`site-loader__text site-loader__text--${message.variant} ${isLast ? "site-loader__text--brand" : ""}`}
+        >
+          {message.text.split("").map((char, i) => {
             const isVisible = i < visibleChars;
             return (
               <span
                 key={`${currentIndex}-${i}`}
-                className={`site-loader__char ${isVisible ? "site-loader__char--visible" : ""}`}
-                style={{ transitionDelay: `${i * LETTER_DELAY}ms` }}
+                className={`site-loader__char site-loader__char--${message.variant} ${isVisible ? "site-loader__char--visible" : ""}`}
+                style={{ transitionDuration: `${message.charDuration}ms`, animationDuration: `${message.charDuration}ms` }}
               >
                 {char === " " ? "\u00A0" : char}
               </span>
@@ -107,7 +118,7 @@ export function SiteLoader() {
       <div className="site-loader__progress" aria-hidden="true">
         <div
           className="site-loader__progress-bar"
-          style={{ width: `${((currentIndex + visibleChars / message.length) / MESSAGES.length) * 100}%` }}
+          style={{ width: `${((currentIndex + visibleChars / message.text.length) / MESSAGES.length) * 100}%` }}
         />
       </div>
     </div>
