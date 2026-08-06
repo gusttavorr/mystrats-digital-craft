@@ -29,7 +29,7 @@ export function Contact() {
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {[
             { href: WHATSAPP_URL, icon: MessageCircle, t: "WhatsApp", d: "(11) 98297-5044", ext: true },
-            { href: "mailto:contato@mystrats.com", icon: Mail, t: "E-mail", d: "contato@mystrats.com", ext: true },
+            { href: "mailto:agencia.mystrats@gmail.com", icon: Mail, t: "E-mail", d: "agencia.mystrats@gmail.com", ext: true },
             { href: "tel:+5511982975044", icon: Phone, t: "Telefone", d: "(11) 98297-5044", ext: false },
           ].map((it, i) => (
             <Reveal key={it.t} delay={i * 80}>
