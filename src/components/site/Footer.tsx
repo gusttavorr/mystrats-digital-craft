@@ -1,4 +1,4 @@
-import logo from "@/assets/mystrats-logo.png";
+const logo = "/mystrats-logo.png";
 import { Instagram, Linkedin, Github } from "lucide-react";
 
 export function Footer() {
@@ -25,7 +25,7 @@ export function Footer() {
             <p className="font-mono-tech text-xs uppercase tracking-[0.2em] text-muted-foreground">Contato</p>
             <ul className="mt-5 space-y-3 text-sm">
               <li className="text-muted-foreground">(11) 98297-5044</li>
-              <li className="text-muted-foreground">contato@mystrats.com</li>
+              <li className="text-muted-foreground">agencia.mystrats@gmail.com</li>
             </ul>
             <div className="mt-6 flex gap-3">
               {[Instagram, Linkedin, Github].map((Icon, i) => (
