@@ -15,10 +15,49 @@ import { Chatbot } from "@/components/site/Chatbot";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MYSTRATS — Sites que vendem. Identidades que ficam na memória." },
-      { name: "description", content: "Agência digital especializada em sites, landing pages, e-commerce e identidade visual. Design estratégico entregue no prazo." },
-      { property: "og:title", content: "MYSTRATS — Agência Digital" },
-      { property: "og:description", content: "Transformamos ideias em experiências digitais. Sites que vendem enquanto você dorme." },
+      { title: "Mystrats | Marketing, Design & Tecnologia" },
+      {
+        name: "description",
+        content:
+          "A Mystrats é uma agência de marketing, criação de sites, design e tecnologia. Criamos sites que vendem, identidade visual marcante e estratégias digitais que geram resultado.",
+      },
+      { name: "robots", content: "index, follow" },
+      { property: "og:title", content: "Mystrats | Marketing, Design & Tecnologia" },
+      {
+        property: "og:description",
+        content:
+          "Marketing, criação de sites, design e tecnologia. A Mystrats transforma ideias em experiências digitais que vendem.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mystrats.online/" },
+      { property: "og:site_name", content: "Mystrats" },
+      { property: "og:locale", content: "pt_BR" },
+      { property: "og:image", content: "https://mystrats.online/mystrats-logo.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Mystrats | Marketing, Design & Tecnologia" },
+      {
+        name: "twitter:description",
+        content:
+          "Marketing, criação de sites, design e tecnologia. A Mystrats transforma ideias em experiências digitais que vendem.",
+      },
+      { name: "twitter:image", content: "https://mystrats.online/mystrats-logo.png" },
+    ],
+    links: [{ rel: "canonical", href: "https://mystrats.online/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Mystrats",
+          url: "https://mystrats.online/",
+          logo: "https://mystrats.online/mystrats-logo.png",
+          description:
+            "Agência de marketing, criação de sites, design e tecnologia.",
+          email: "agencia.mystrats@gmail.com",
+          sameAs: [],
+        }),
+      },
     ],
   }),
   component: Index,
