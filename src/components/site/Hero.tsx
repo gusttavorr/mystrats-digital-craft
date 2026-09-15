@@ -1,73 +1,128 @@
-import { ParticlesBackground } from "./ParticlesBackground";
-import { HolographicSphere } from "./HolographicSphere";
-import { ScrambleText } from "./ScrambleText";
-import { CountUp } from "./CountUp";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { useRef, useState, type FormEvent } from "react";
+import { ArrowRight, Building2, Clock3, LayoutGrid, ShieldCheck, ShoppingCart, Sparkles, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import orbitMark from "@/assets/mystrats-orbit-mark-cropped.png";
+
+const WHATSAPP_BASE = "https://wa.me/5511982975044";
+
+const suggestions = [
+  { label: "Site institucional", prompt: "Quero um orçamento para um site institucional.", icon: Building2 },
+  { label: "Landing page", prompt: "Quero um orçamento para uma landing page.", icon: Zap },
+  { label: "E-commerce", prompt: "Quero um orçamento para um e-commerce.", icon: ShoppingCart },
+  { label: "Catálogo digital", prompt: "Quero um orçamento para um catálogo digital.", icon: LayoutGrid },
+];
+
+const dots = Array.from({ length: 34 }, (_, index) => ({
+  id: index,
+  side: index % 2 === 0 ? "left" : "right",
+  top: 8 + ((index * 17) % 84),
+  offset: 2 + ((index * 29) % 25),
+  size: 2 + (index % 4),
+  opacity: 0.16 + (index % 5) * 0.1,
+  delay: (index % 7) * -0.7,
+}));
 
 export function Hero() {
+  const [message, setMessage] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const submitEstimate = (event: FormEvent) => {
+    event.preventDefault();
+    const trimmed = message.trim();
+    if (!trimmed) {
+      inputRef.current?.focus();
+      return;
+    }
+    const text = `Olá! Vim pelo site da MYSTRATS. ${trimmed}`;
+    window.open(`${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+  };
+
+  const selectSuggestion = (prompt: string) => {
+    setMessage(prompt);
+    requestAnimationFrame(() => inputRef.current?.focus());
+  };
+
   return (
-    <section id="top" className="relative min-h-screen overflow-hidden gradient-radial-fade grain pt-24 md:pt-32">
-      <div className="absolute inset-0 grid-bg opacity-50" />
-      <ParticlesBackground />
-      <HolographicSphere />
-
-      <div className="relative mx-auto flex max-w-7xl flex-col items-start px-6 pb-20 pt-8 md:pb-32 md:pt-12 md:pt-24">
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 backdrop-blur">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-foreground" />
-          <span className="font-mono-tech text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-            Agência Digital · Disponível agora
-          </span>
-        </div>
-
-        <h1 className="font-display text-balance text-[clamp(2.75rem,8vw,7rem)] font-bold leading-[0.95] tracking-tight">
-          <ScrambleText text="Transformamos ideias" />
-          <br />
-          <span className="text-muted-foreground">em experiências</span>
-          <br />
-          <ScrambleText text="digitais." />
-        </h1>
-
-        <p className="mt-8 max-w-xl text-balance text-base text-muted-foreground md:text-lg">
-          Sites que vendem. Identidades que ficam na memória. Design estratégico,
-          tecnologia de ponta e copy de impacto — entregues no prazo.
-        </p>
-
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <a
-            href="#portfolio"
-            className="group inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-background transition-transform hover:scale-[1.02]"
-          >
-            Ver nossos projetos
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </a>
-          <a
-            href="#contato"
-            className="group inline-flex items-center justify-center gap-2 rounded-full border border-border px-7 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-foreground transition-colors hover:border-foreground/60"
-          >
-            Falar com a gente
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
-        </div>
-
-        <div className="mt-16 grid w-full grid-cols-3 md:mt-24 gap-6 border-t border-border pt-8">
-          {[
-            { n: 47, s: "+", l: "Projetos entregues" },
-            { n: 5, s: "+", l: "Anos de mercado" },
-            { n: 100, s: "%", l: "Satisfação" },
-          ].map((it) => (
-            <div key={it.l}>
-              <div className="font-display text-4xl font-bold md:text-6xl">
-                <CountUp end={it.n} suffix={it.s} />
-              </div>
-              <div className="mt-1 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-muted-foreground md:text-xs">
-                {it.l}
-              </div>
-            </div>
-          ))}
-        </div>
+    <section id="top" className="relative flex min-h-[min(940px,100svh)] overflow-hidden bg-hero-bg pt-[72px] text-hero-ink">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {dots.map((dot) => (
+          <span
+            key={dot.id}
+            className="hero-dot absolute rounded-full bg-hero-ink"
+            style={{
+              top: `${dot.top}%`,
+              [dot.side]: `${dot.offset}%`,
+              width: dot.size,
+              height: dot.size,
+              opacity: dot.opacity,
+              animationDelay: `${dot.delay}s`,
+            }}
+          />
+        ))}
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-background" />
+      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center justify-center px-5 pb-10 pt-8 text-center sm:px-8 md:pb-14 md:pt-10">
+        <img
+          src={orbitMark}
+          alt="Símbolo MYSTRATS"
+          width={884}
+          height={812}
+          className="hero-enter hero-enter-1 h-[76px] w-auto sm:h-[94px] lg:h-[112px]"
+        />
+
+        <p className="hero-enter hero-enter-2 mt-5 text-[10px] font-bold uppercase tracking-[0.24em] text-hero-muted sm:text-xs">
+          MYSTRATS <span className="px-1 text-hero-blue">•</span> Orçamento inteligente
+        </p>
+
+        <h1 className="hero-title hero-enter hero-enter-3 mt-5 max-w-4xl text-balance text-[clamp(2.55rem,7.2vw,5.75rem)] font-semibold leading-[0.94] tracking-normal text-hero-ink">
+          Quanto custa o seu
+          <br className="hidden sm:block" /> próximo site?
+        </h1>
+
+        <p className="hero-enter hero-enter-4 mt-5 max-w-2xl text-balance text-sm leading-relaxed text-hero-muted sm:text-base md:text-lg">
+          Conte o que você precisa e receba uma estimativa personalizada de investimento e prazo.
+        </p>
+
+        <form onSubmit={submitEstimate} className="hero-enter hero-enter-5 mt-7 w-full max-w-3xl rounded-[24px] border border-hero-border bg-hero-panel p-2.5 shadow-[0_24px_70px_color-mix(in_oklab,var(--hero-ink)_10%,transparent)] sm:p-4">
+          <div className="flex min-h-14 items-center gap-2 rounded-full border border-hero-border bg-hero-bg p-1.5 pl-4 transition-all focus-within:border-hero-blue focus-within:shadow-[0_0_0_4px_color-mix(in_oklab,var(--hero-blue)_12%,transparent)] sm:min-h-16 sm:pl-5">
+            <Sparkles className="h-5 w-5 shrink-0 text-hero-blue" aria-hidden="true" />
+            <input
+              ref={inputRef}
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              placeholder="Conte como você imagina seu site..."
+              aria-label="Conte como você imagina seu site"
+              className="min-w-0 flex-1 bg-transparent text-sm text-hero-ink outline-none placeholder:text-hero-muted sm:text-base"
+            />
+            <Button type="submit" size="icon" aria-label="Enviar pedido de orçamento" className="h-11 w-11 shrink-0 rounded-full bg-hero-ink text-hero-bg shadow-none transition-transform hover:scale-[1.04] hover:bg-hero-blue sm:h-12 sm:w-12">
+              <ArrowRight className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3 sm:grid-cols-4">
+            {suggestions.map((suggestion) => (
+              <Button
+                key={suggestion.label}
+                type="button"
+                variant="outline"
+                onClick={() => selectSuggestion(suggestion.prompt)}
+                className="h-10 min-w-0 rounded-full border-hero-border bg-hero-bg px-2 text-[11px] font-medium text-hero-ink shadow-none transition-all hover:scale-[1.02] hover:border-hero-blue hover:bg-hero-blue hover:text-hero-bg sm:px-3 sm:text-xs"
+              >
+                <suggestion.icon className="h-3.5 w-3.5" />
+                <span className="truncate">{suggestion.label}</span>
+              </Button>
+            ))}
+          </div>
+        </form>
+
+        <div className="hero-enter hero-enter-6 mt-5 flex max-w-3xl flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[10px] font-medium text-hero-muted sm:text-xs">
+          <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-hero-blue" />Estimativa personalizada</span>
+          <span aria-hidden="true">•</span>
+          <span className="inline-flex items-center gap-1.5"><Clock3 className="h-3.5 w-3.5 text-hero-blue" />Prazo de entrega</span>
+          <span aria-hidden="true">•</span>
+          <span className="inline-flex items-center gap-1.5"><LayoutGrid className="h-3.5 w-3.5 text-hero-blue" />Escopo do projeto</span>
+        </div>
+      </div>
     </section>
   );
 }
