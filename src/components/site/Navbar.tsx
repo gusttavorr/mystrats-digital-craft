@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-const logo = "/mystrats-logo.png";
+import { ArrowRight, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import wordmark from "@/assets/mystrats-wordmark-black-cropped.png";
 
 const links = [
   { href: "#sobre", label: "Sobre" },
   { href: "#servicos", label: "Serviços" },
   { href: "#portfolio", label: "Portfólio" },
   { href: "#por-que", label: "Por que nós" },
-  { href: "#depoimentos", label: "Depoimentos" },
   { href: "#contato", label: "Contato" },
 ];
 
@@ -22,69 +23,56 @@ export function Navbar() {
   }, []);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? "backdrop-blur-xl bg-background/70 border-b border-border"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#top" className="flex items-center gap-2">
-          <img src={logo} alt="MYSTRATS" width={762} height={176} className="h-8 w-auto md:h-12" />
+    <header className={`fixed inset-x-0 top-0 z-50 border-b border-hero-border bg-hero-bg/95 transition-shadow duration-300 backdrop-blur-xl ${scrolled ? "shadow-[0_8px_30px_color-mix(in_oklab,var(--hero-ink)_7%,transparent)]" : ""}`}>
+      <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-16">
+        <a href="#top" className="flex shrink-0 items-center" aria-label="MYSTRATS — início">
+          <img src={wordmark} alt="MYSTRATS" width={1154} height={138} className="h-[21px] w-auto sm:h-6" />
         </a>
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegação principal">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="text-[13px] font-medium text-hero-muted transition-colors hover:text-hero-blue"
             >
               {l.label}
             </a>
           ))}
         </nav>
-        <a
-          href="#contato"
-          className="hidden rounded-full border border-border bg-foreground px-5 py-2 text-xs font-semibold uppercase tracking-widest text-background transition-transform hover:scale-105 md:inline-block"
-        >
-          Falar com a gente
-        </a>
-        <button
+        <Button asChild className="hidden h-11 rounded-full bg-hero-ink px-5 text-hero-bg shadow-none transition-transform hover:scale-[1.02] hover:bg-hero-blue lg:inline-flex">
+          <a href="#contato">Falar com a gente <ArrowRight /></a>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
           aria-label="Menu"
           onClick={() => setOpen((o) => !o)}
-          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+          className="rounded-full text-hero-ink hover:bg-hero-panel lg:hidden"
         >
-          <span className={`h-px w-6 bg-foreground transition-transform ${open ? "translate-y-[7px] rotate-45" : ""}`} />
-          <span className={`h-px w-6 bg-foreground transition-opacity ${open ? "opacity-0" : ""}`} />
-          <span className={`h-px w-6 bg-foreground transition-transform ${open ? "-translate-y-[5px] -rotate-45" : ""}`} />
-        </button>
+          {open ? <X /> : <Menu />}
+        </Button>
       </div>
 
-      {/* mobile drawer */}
       <div
-        className={`fixed inset-y-0 right-0 z-50 w-72 transform border-l border-border bg-background p-8 transition-transform duration-300 md:hidden ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`absolute inset-x-0 top-[72px] border-b border-hero-border bg-hero-bg px-5 py-6 shadow-lg transition-all duration-300 lg:hidden ${
+          open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-3 opacity-0"
         }`}
       >
-        <nav className="mt-16 flex flex-col gap-6">
+        <nav className="mx-auto flex max-w-[1440px] flex-col gap-1" aria-label="Navegação móvel">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="font-display text-2xl font-bold text-foreground"
+              className="rounded-xl px-3 py-3 font-medium text-hero-ink transition-colors hover:bg-hero-panel hover:text-hero-blue"
             >
               {l.label}
             </a>
           ))}
-          <a
-            href="#contato"
-            onClick={() => setOpen(false)}
-            className="mt-4 rounded-full bg-foreground px-5 py-3 text-center text-xs font-semibold uppercase tracking-widest text-background"
-          >
-            Falar com a gente
-          </a>
+          <Button asChild className="mt-4 h-11 rounded-full bg-hero-ink text-hero-bg hover:bg-hero-blue">
+            <a href="#contato" onClick={() => setOpen(false)}>Falar com a gente <ArrowRight /></a>
+          </Button>
         </nav>
       </div>
     </header>
