@@ -1,26 +1,18 @@
 import { useRef, useState, type FormEvent } from "react";
+import { motion } from "framer-motion";
 import { ArrowRight, Building2, Clock3, LayoutGrid, ShieldCheck, ShoppingCart, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import orbitMark from "@/assets/mystrats-orbit-mark-cropped.png";
 
 const WHATSAPP_BASE = "https://wa.me/5511982975044";
+const SHOWREEL = "/mystrats-showreel-smooth.mp4";
 
-const suggestions = [
+const chips = [
   { label: "Site institucional", prompt: "Quero um orçamento para um site institucional.", icon: Building2 },
   { label: "Landing page", prompt: "Quero um orçamento para uma landing page.", icon: Zap },
   { label: "E-commerce", prompt: "Quero um orçamento para um e-commerce.", icon: ShoppingCart },
   { label: "Catálogo digital", prompt: "Quero um orçamento para um catálogo digital.", icon: LayoutGrid },
 ];
-
-const dots = Array.from({ length: 34 }, (_, index) => ({
-  id: index,
-  side: index % 2 === 0 ? "left" : "right",
-  top: 8 + ((index * 17) % 84),
-  offset: 2 + ((index * 29) % 25),
-  size: 2 + (index % 4),
-  opacity: 0.16 + (index % 5) * 0.1,
-  delay: (index % 7) * -0.7,
-}));
 
 export function Hero() {
   const [message, setMessage] = useState("");
@@ -37,92 +29,125 @@ export function Hero() {
     window.open(`${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
   };
 
-  const selectSuggestion = (prompt: string) => {
-    setMessage(prompt);
-    requestAnimationFrame(() => inputRef.current?.focus());
-  };
-
   return (
-    <section id="top" className="relative flex min-h-[min(940px,100svh)] overflow-hidden bg-hero-bg pt-[72px] text-hero-ink">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {dots.map((dot) => (
-          <span
-            key={dot.id}
-            className="hero-dot absolute rounded-full bg-hero-ink"
-            style={{
-              top: `${dot.top}%`,
-              [dot.side]: `${dot.offset}%`,
-              width: dot.size,
-              height: dot.size,
-              opacity: dot.opacity,
-              animationDelay: `${dot.delay}s`,
-            }}
-          />
-        ))}
-      </div>
+    <section id="top" className="relative overflow-hidden bg-background pt-[76px]">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[16%] hero-dots opacity-60" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[16%] hero-dots opacity-60" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center justify-center px-5 pb-10 pt-8 text-center sm:px-8 md:pb-14 md:pt-10">
+      <div className="relative mx-auto flex max-w-5xl flex-col items-center px-5 pb-14 pt-12 text-center sm:px-8 md:pb-20 md:pt-16">
         <img
           src={orbitMark}
           alt="Símbolo MYSTRATS"
           width={884}
           height={812}
-          className="hero-enter hero-enter-1 h-[76px] w-auto sm:h-[94px] lg:h-[112px]"
+          className="rise-in rise-1 h-[72px] w-auto sm:h-[88px] lg:h-[104px]"
         />
 
-        <p className="hero-enter hero-enter-2 mt-5 text-[10px] font-bold uppercase tracking-[0.24em] text-hero-muted sm:text-xs">
-          MYSTRATS <span className="px-1 text-hero-blue">•</span> Orçamento inteligente
+        <p className="rise-in rise-2 mt-6 text-[10px] font-bold uppercase tracking-[0.26em] text-muted-foreground sm:text-[11px]">
+          MYSTRATS <span className="px-1 text-brand-blue">•</span> Orçamento inteligente
         </p>
 
-        <h1 className="hero-title hero-enter hero-enter-3 mt-5 max-w-4xl text-balance text-[clamp(2.55rem,7.2vw,5.75rem)] font-semibold leading-[0.94] tracking-normal text-hero-ink">
-          Quanto custa o seu
-          <br className="hidden sm:block" /> próximo site?
+        <h1 className="rise-in rise-3 mt-5 max-w-4xl text-balance text-[clamp(2.5rem,7vw,5.25rem)] font-extrabold leading-[0.98] text-foreground">
+          Quanto custa o seu próximo site?
         </h1>
 
-        <p className="hero-enter hero-enter-4 mt-5 max-w-2xl text-balance text-sm leading-relaxed text-hero-muted sm:text-base md:text-lg">
+        <p className="rise-in rise-4 mt-6 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground md:text-lg">
           Conte o que você precisa e receba uma estimativa personalizada de investimento e prazo.
         </p>
 
-        <form onSubmit={submitEstimate} className="hero-enter hero-enter-5 mt-7 w-full max-w-3xl rounded-[24px] border border-hero-border bg-hero-panel p-2.5 shadow-[0_24px_70px_color-mix(in_oklab,var(--hero-ink)_10%,transparent)] sm:p-4">
-          <div className="flex min-h-14 items-center gap-2 rounded-full border border-hero-border bg-hero-bg p-1.5 pl-4 transition-all focus-within:border-hero-blue focus-within:shadow-[0_0_0_4px_color-mix(in_oklab,var(--hero-blue)_12%,transparent)] sm:min-h-16 sm:pl-5">
-            <Sparkles className="h-5 w-5 shrink-0 text-hero-blue" aria-hidden="true" />
+        <form
+          onSubmit={submitEstimate}
+          className="rise-in rise-5 mt-9 w-full max-w-3xl rounded-3xl border border-border bg-surface p-3 shadow-[0_22px_60px_color-mix(in_oklab,var(--ink)_9%,transparent)] sm:p-4"
+        >
+          <div className="flex min-h-14 items-center gap-2 rounded-full border border-border bg-background p-1.5 pl-4 transition-all focus-within:border-brand-blue focus-within:shadow-[0_0_0_4px_color-mix(in_oklab,var(--brand-blue)_14%,transparent)] sm:min-h-16 sm:pl-5">
+            <Sparkles className="h-5 w-5 shrink-0 text-brand-blue" aria-hidden="true" />
             <input
               ref={inputRef}
               value={message}
               onChange={(event) => setMessage(event.target.value)}
               placeholder="Conte como você imagina seu site..."
               aria-label="Conte como você imagina seu site"
-              className="min-w-0 flex-1 bg-transparent text-sm text-hero-ink outline-none placeholder:text-hero-muted sm:text-base"
+              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground sm:text-base"
             />
-            <Button type="submit" size="icon" aria-label="Enviar pedido de orçamento" className="h-11 w-11 shrink-0 rounded-full bg-hero-ink text-hero-bg shadow-none transition-transform hover:scale-[1.04] hover:bg-hero-blue sm:h-12 sm:w-12">
+            <Button
+              type="submit"
+              size="icon"
+              aria-label="Enviar pedido de orçamento"
+              className="h-11 w-11 shrink-0 rounded-full bg-primary text-primary-foreground shadow-none transition-all duration-200 hover:scale-[1.03] hover:bg-brand-blue sm:h-12 sm:w-12"
+            >
               <ArrowRight className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3 sm:grid-cols-4">
-            {suggestions.map((suggestion) => (
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {chips.map((chip) => (
               <Button
-                key={suggestion.label}
+                key={chip.label}
                 type="button"
                 variant="outline"
-                onClick={() => selectSuggestion(suggestion.prompt)}
-                className="h-10 min-w-0 rounded-full border-hero-border bg-hero-bg px-2 text-[11px] font-medium text-hero-ink shadow-none transition-all hover:scale-[1.02] hover:border-hero-blue hover:bg-hero-blue hover:text-hero-bg sm:px-3 sm:text-xs"
+                onClick={() => {
+                  setMessage(chip.prompt);
+                  requestAnimationFrame(() => inputRef.current?.focus());
+                }}
+                className="h-10 min-w-0 rounded-full border-border bg-background px-2 text-[11px] font-medium text-foreground shadow-none transition-all duration-200 hover:scale-[1.03] hover:border-brand-blue hover:bg-brand-blue hover:text-accent-foreground sm:px-3 sm:text-xs"
               >
-                <suggestion.icon className="h-3.5 w-3.5" />
-                <span className="truncate">{suggestion.label}</span>
+                <chip.icon className="h-3.5 w-3.5" />
+                <span className="truncate">{chip.label}</span>
               </Button>
             ))}
           </div>
         </form>
 
-        <div className="hero-enter hero-enter-6 mt-5 flex max-w-3xl flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[10px] font-medium text-hero-muted sm:text-xs">
-          <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-hero-blue" />Estimativa personalizada</span>
+        <p className="rise-in rise-6 mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[11px] font-medium text-muted-foreground sm:text-xs">
+          <span className="inline-flex items-center gap-1.5">
+            <ShieldCheck className="h-3.5 w-3.5 text-brand-blue" />
+            Estimativa personalizada
+          </span>
           <span aria-hidden="true">•</span>
-          <span className="inline-flex items-center gap-1.5"><Clock3 className="h-3.5 w-3.5 text-hero-blue" />Prazo de entrega</span>
+          <span className="inline-flex items-center gap-1.5">
+            <Clock3 className="h-3.5 w-3.5 text-brand-blue" />
+            Prazo de entrega
+          </span>
           <span aria-hidden="true">•</span>
-          <span className="inline-flex items-center gap-1.5"><LayoutGrid className="h-3.5 w-3.5 text-hero-blue" />Escopo do projeto</span>
-        </div>
+          <span className="inline-flex items-center gap-1.5">
+            <LayoutGrid className="h-3.5 w-3.5 text-brand-blue" />
+            Escopo do projeto
+          </span>
+        </p>
+
+        <Button
+          asChild
+          className="rise-in rise-6 mt-8 h-12 rounded-full bg-primary px-7 text-primary-foreground shadow-none transition-all duration-200 hover:scale-[1.03] hover:bg-brand-blue"
+        >
+          <a href="#contato">
+            Solicitar proposta <ArrowRight />
+          </a>
+        </Button>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="relative mx-auto max-w-[1400px] px-5 pb-16 sm:px-8 md:pb-24 lg:px-14"
+      >
+        <div className="overflow-hidden rounded-3xl border border-border bg-foreground">
+          <video
+            src={SHOWREEL}
+            className="aspect-video h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-label="Showreel MYSTRATS"
+          />
+        </div>
+        <p className="mt-4 text-center font-mono-tech text-[10px] uppercase tracking-[0.28em] text-muted-foreground sm:text-[11px]">
+          MYSTRATS — Our work in motion
+        </p>
+      </motion.div>
     </section>
   );
 }

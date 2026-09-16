@@ -1,45 +1,52 @@
-import { Reveal } from "./Reveal";
+import { motion } from "framer-motion";
+import { Compass, Palette, TrendingUp } from "lucide-react";
 
-const values = [
-  { k: "01", t: "Estratégia", d: "Cada pixel ancorado num objetivo de negócio claro." },
-  { k: "02", t: "Criatividade", d: "Design único, nunca template. Sua marca em primeiro plano." },
-  { k: "03", t: "Resultado", d: "Sites que convertem e marcas que ficam na memória." },
+const cards = [
+  { n: "01", t: "Estratégia", d: "Cada pixel ancorado num objetivo de negócio claro.", icon: Compass },
+  { n: "02", t: "Criatividade", d: "Design único, nunca template. Sua marca em primeiro plano.", icon: Palette },
+  { n: "03", t: "Resultado", d: "Sites que convertem e marcas que ficam na memória.", icon: TrendingUp },
 ];
 
 export function About() {
   return (
-    <section id="sobre" className="relative sand-flow sand-flow--br py-20 md:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <p className="font-mono-tech text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            (01) Quem somos
+    <section id="sobre" className="bg-surface py-20 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-14">
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl"
+        >
+          <p className="section-index">01 — Quem somos</p>
+          <h2 className="mt-6 text-balance text-[clamp(1.9rem,4.4vw,3.4rem)] font-extrabold leading-[1.05]">
+            Empresas com grande potencial não merecem sites amadores.
+          </h2>
+          <p className="mt-6 text-base leading-relaxed text-muted-foreground md:text-lg">
+            A MYSTRATS nasceu para resolver um problema real. Unimos design estratégico, tecnologia de
+            ponta e copy de impacto para criar sites que trabalham por você 24h por dia.
           </p>
-        </Reveal>
-        <div className="mt-6 grid gap-16 md:grid-cols-12">
-          <Reveal className="md:col-span-7">
-            <h2 className="font-display text-balance text-[clamp(2rem,5vw,4rem)] font-bold leading-[1.05]">
-              Empresas com grande potencial não merecem
-              <span className="text-muted-foreground"> sites amadores.</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={120} className="md:col-span-5">
-            <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-              A MYSTRATS nasceu para resolver um problema real. Unimos design
-              estratégico, tecnologia de ponta e copy de impacto para criar sites
-              que trabalham por você <span className="text-foreground">24h por dia</span>.
-            </p>
-          </Reveal>
-        </div>
+        </motion.div>
 
-        <div className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-3">
-          {values.map((v, i) => (
-            <Reveal key={v.k} delay={i * 120}>
-              <div className="h-full bg-card p-8 md:p-10">
-                <div className="font-mono-tech text-xs text-muted-foreground">{v.k}</div>
-                <h3 className="mt-6 font-display text-3xl font-bold">{v.t}</h3>
-                <p className="mt-3 text-sm text-muted-foreground">{v.d}</p>
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {cards.map((card, i) => (
+            <motion.article
+              key={card.n}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="card-lift rounded-3xl border border-border bg-background p-7"
+            >
+              <div className="flex items-center justify-between">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-blue-soft text-brand-blue">
+                  <card.icon className="h-5 w-5" strokeWidth={1.8} />
+                </span>
+                <span className="section-index">{card.n}</span>
               </div>
-            </Reveal>
+              <h3 className="mt-6 text-xl font-bold">{card.t}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.d}</p>
+            </motion.article>
           ))}
         </div>
       </div>
