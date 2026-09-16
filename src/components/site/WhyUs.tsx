@@ -1,38 +1,51 @@
-import { Reveal } from "./Reveal";
-import { Clock, Sparkles, LifeBuoy, Target, Code2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { Check } from "lucide-react";
 
 const items = [
-  { icon: Clock, t: "Prazo que você pode cobrar", d: "Cronograma claro, etapas aprovadas, entrega no dia combinado." },
-  { icon: Sparkles, t: "Design único, nunca template", d: "Cada projeto desenhado do zero para a sua marca." },
-  { icon: LifeBuoy, t: "Suporte dedicado pós-entrega", d: "Você não fica sozinho depois do go-live." },
-  { icon: Target, t: "Estratégia que converte", d: "Cada decisão de design pensada para gerar resultado." },
-  { icon: Code2, t: "Código limpo e SEO desde o início", d: "Performance, semântica e Core Web Vitals priorizados." },
+  { t: "Prazo que você pode cobrar", d: "Cronograma claro, etapas aprovadas, entrega no dia combinado." },
+  { t: "Design único, nunca template", d: "Cada projeto desenhado do zero para a sua marca." },
+  { t: "Suporte dedicado pós-entrega", d: "Você não fica sozinho depois do go-live." },
+  { t: "Estratégia que converte", d: "Cada decisão de design pensada para gerar resultado." },
+  { t: "Código limpo e SEO desde o início", d: "Performance, semântica e Core Web Vitals priorizados." },
 ];
 
 export function WhyUs() {
   return (
-    <section id="por-que" className="relative sand-flow sand-flow--bu py-20 md:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <p className="font-mono-tech text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            (04) Por que MYSTRATS
-          </p>
-          <h2 className="mt-6 max-w-3xl font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-[1.05]">
-            Cinco compromissos que <span className="text-muted-foreground">não negociamos.</span>
+    <section id="por-que" className="bg-surface py-20 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-14">
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl"
+        >
+          <p className="section-index">04 — Por que MYSTRATS</p>
+          <h2 className="mt-6 text-balance text-[clamp(1.9rem,4.4vw,3.4rem)] font-extrabold leading-[1.05]">
+            Cinco compromissos que não negociamos.
           </h2>
-        </Reveal>
+        </motion.div>
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
-          {items.map((it, i) => (
-            <Reveal key={it.t} delay={i * 80}>
-              <div className="group h-full bg-card p-8 transition-colors hover:bg-popover">
-                <div className="grid h-12 w-12 place-items-center rounded-full border border-border transition-transform group-hover:rotate-12">
-                  <it.icon className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                <h3 className="mt-6 font-display text-xl font-bold">{it.t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{it.d}</p>
+        <div className="mt-14 grid gap-5 md:grid-cols-2">
+          {items.map((item, i) => (
+            <motion.div
+              key={item.t}
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: (i % 2) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className={`card-lift flex gap-4 rounded-3xl border border-border bg-background p-7 ${
+                i === items.length - 1 ? "md:col-span-2" : ""
+              }`}
+            >
+              <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-blue-soft text-brand-blue">
+                <Check className="h-4 w-4" strokeWidth={2.4} />
+              </span>
+              <div className="min-w-0">
+                <h3 className="text-lg font-bold">{item.t}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{item.d}</p>
               </div>
-            </Reveal>
+            </motion.div>
           ))}
         </div>
       </div>
