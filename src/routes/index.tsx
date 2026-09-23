@@ -10,7 +10,7 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
-import { Chatbot } from "@/components/site/Chatbot";
+import { TechDissolve } from "@/components/site/TechDissolve";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,6 +68,7 @@ function Index() {
     <main className="relative min-h-screen overflow-x-clip bg-background text-foreground">
       <Navbar />
       <Hero />
+      <TechDissolve />
       <VideoReveal />
       <About />
       <Services />
@@ -77,7 +78,6 @@ function Index() {
       <Contact />
       <Footer />
       <WhatsAppFloat />
-      <Chatbot />
     </main>
   );
 }
