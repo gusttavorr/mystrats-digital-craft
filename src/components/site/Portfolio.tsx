@@ -8,9 +8,26 @@ type Project = {
   span: string;
   ratio: string;
   img: string;
+  href?: string;
 };
 
 const projects: Project[] = [
+  {
+    title: "Duo Freitas",
+    category: "Portfólio",
+    span: "md:col-span-2",
+    ratio: "aspect-[16/9]",
+    img: "https://image.thum.io/get/width/600/crop/400/https://duofreitas.vercel.app",
+    href: "https://duofreitas.vercel.app",
+  },
+  {
+    title: "Maiara Fonseca Estética",
+    category: "Institucional",
+    span: "md:col-span-2",
+    ratio: "aspect-[16/9]",
+    img: "https://image.thum.io/get/width/600/crop/400/https://maiarafonsecaestetica.online",
+    href: "https://maiarafonsecaestetica.online",
+  },
   {
     title: "Loja Virtual — Moda",
     category: "E-commerce",
@@ -106,7 +123,9 @@ export function Portfolio() {
           {list.map((p, i) => (
             <Reveal key={p.title + filter} delay={i * 80} className={p.span}>
               <a
-                href="#contato"
+                href={p.href ?? "#contato"}
+                target={p.href ? "_blank" : undefined}
+                rel={p.href ? "noopener noreferrer" : undefined}
                 className="portfolio-scan-card group relative block h-full overflow-hidden rounded-2xl border border-border bg-card"
                 style={{ "--portfolio-delay": `${i * 80}ms` } as CSSProperties}
               >

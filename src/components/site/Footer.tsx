@@ -7,7 +7,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <img src={logo} alt="MYSTRATS" className="h-10 w-auto" />
+            <img src={logo} alt="MYSTRATS" loading="lazy" className="h-10 w-auto" />
             <p className="mt-6 max-w-sm text-sm text-muted-foreground">
               Sites que vendem. Identidades que ficam na memória. Pronto para crescer online? A MYSTRATS está aqui.
             </p>
