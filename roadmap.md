@@ -15,3 +15,12 @@
 - [ ] Seção 06 Contato em fundo preto com 3 canais e formulário
 - [ ] Footer + botão flutuante WhatsApp
 - [ ] Verificar responsividade, animações e build
+
+## Melhorias adicionais (pedido mais recente)
+- [ ] Otimizar imagens, fontes e carregamento do showreel apenas no viewport
+- [ ] Remover completamente o chatbot lateral automático
+- [ ] Integrar conversa com IA no hero e exibir histórico
+- [ ] Criar fundo escuro com partículas reativas, conexões e ondas ao clique
+- [ ] Criar transição Hero → Sobre com células digitais e scanline vinculadas ao scroll
+- [ ] Inserir Duo Freitas e Maiara Fonseca Estética antes dos projetos existentes
+- [ ] Manter apenas WhatsApp flutuante e formulário na seção final
