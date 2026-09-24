@@ -86,6 +86,7 @@ export function Hero() {
               ref={textareaRef}
               value={input}
               onChange={(event) => setInput(event.target.value)}
+              onInput={(event) => setInput(event.currentTarget.value)}
               placeholder="Descreva seu projeto..."
               aria-label="Descreva seu projeto"
               className="min-h-20 text-ink-invert placeholder:text-ink-invert/40"
@@ -94,7 +95,7 @@ export function Hero() {
               <PromptInputSubmit
                 status={status}
                 onStop={stop}
-                disabled={!input.trim() && !busy}
+                disabled={busy}
                 aria-label={busy ? "Parar resposta" : "Enviar descrição"}
                 className={input.trim() ? "rounded-full bg-brand-blue text-ink-invert hover:bg-brand-blue/80" : "rounded-full bg-ink-invert/10 text-ink-invert/40"}
               >
@@ -110,7 +111,7 @@ export function Hero() {
                 key={chip.label}
                 type="button"
                 variant="outline"
-                onClick={() => { setInput(chip.prompt); requestAnimationFrame(() => textareaRef.current?.focus()); }}
+                onClick={() => { void submit(chip.prompt); }}
                 className="h-9 min-w-0 rounded-full border-ink-invert/15 bg-ink-invert/[0.07] px-3 text-[11px] font-medium text-ink-invert shadow-none transition-all duration-200 hover:scale-[1.03] hover:border-brand-blue hover:bg-brand-blue sm:text-xs"
               >
                 {chip.label}
