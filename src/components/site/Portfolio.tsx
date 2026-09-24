@@ -1,4 +1,6 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useRef, useState, type CSSProperties } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { Reveal } from "./Reveal";
 import { ArrowUpRight } from "lucide-react";
 
@@ -70,6 +72,10 @@ const filters = ["Todos", "Landing Page", "E-commerce", "Institucional", "Portf√
 
 export function Portfolio() {
   const [filter, setFilter] = useState<(typeof filters)[number]>("Todos");
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const galleryScale = useTransform(scrollYProgress, [0.05, 0.42], [0.82, 1]);
+  const galleryOpacity = useTransform(scrollYProgress, [0.05, 0.28], [0.35, 1]);
 
   const list = useMemo(
     () => (filter === "Todos" ? projects : projects.filter((p) => p.category === filter)),
@@ -77,7 +83,7 @@ export function Portfolio() {
   );
 
   return (
-    <section id="portfolio" className="relative sand-flow sand-flow--l py-20 md:py-32">
+    <section ref={sectionRef} id="portfolio" className="relative bg-background py-20 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>
@@ -96,24 +102,26 @@ export function Portfolio() {
               </div>
               <div className="flex flex-wrap gap-2">
               {filters.map((f) => (
-                <button
+                <Button
                   key={f}
+                  type="button"
+                  variant="outline"
                   onClick={() => setFilter(f)}
-                  className={`rounded-full border px-4 py-1.5 font-mono-tech text-[10px] uppercase tracking-[0.18em] transition-colors ${
+                  className={`h-8 rounded-full border px-4 font-mono-tech text-[10px] uppercase tracking-[0.18em] transition-colors ${
                     filter === f
                       ? "border-foreground bg-foreground text-background"
                       : "border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"
                   }`}
                 >
                   {f}
-                </button>
+                </Button>
               ))}
               </div>
             </div>
           </Reveal>
         </div>
 
-        <div className="mt-16 grid auto-rows-[minmax(0,1fr)] grid-cols-1 gap-5 md:grid-cols-4">
+        <motion.div style={{ scale: galleryScale, opacity: galleryOpacity }} className="mt-16 grid auto-rows-[minmax(0,1fr)] grid-cols-1 gap-5 md:grid-cols-4">
           {list.map((p, i) => (
             <Reveal key={p.title + filter} delay={i * 80} className={p.span}>
               <a
@@ -150,7 +158,7 @@ export function Portfolio() {
               </a>
             </Reveal>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
