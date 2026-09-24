@@ -24,3 +24,9 @@
 - [ ] Criar transição Hero → Sobre com células digitais e scanline vinculadas ao scroll
 - [ ] Inserir Duo Freitas e Maiara Fonseca Estética antes dos projetos existentes
 - [ ] Manter apenas WhatsApp flutuante e formulário na seção final
+
+## Correções v2 recebidas em 24/09/2026
+- [ ] Centralizar o orbit mark atrás do conteúdo e aplicar rotação lenta
+- [ ] Manter apenas o showreel fora do hero, com carregamento ao entrar no viewport
+- [ ] Refinar o chat do hero para composição visual inspirada no Claude
+- [ ] Confirmar botão flutuante de WhatsApp único, sem chatbot lateral

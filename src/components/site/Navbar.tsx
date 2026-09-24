@@ -32,7 +32,7 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-14">
         <a href="#top" className="flex shrink-0 items-center" aria-label="MYSTRATS — início">
-          <img src={wordmark} alt="MYSTRATS" width={1154} height={138} className="h-[20px] w-auto sm:h-[23px]" />
+          <img src={wordmark} alt="MYSTRATS" width={1154} height={138} fetchPriority="high" className={`h-[20px] w-auto transition-[filter] sm:h-[23px] ${scrolled ? "" : "invert"}`} />
         </a>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Navegação principal">
@@ -40,7 +40,7 @@ export function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className="text-[13px] font-medium text-muted-foreground transition-colors hover:text-brand-blue"
+              className={`text-[13px] font-medium transition-colors hover:text-brand-blue ${scrolled ? "text-muted-foreground" : "text-ink-invert/70"}`}
             >
               {l.label}
             </a>
@@ -63,7 +63,7 @@ export function Navbar() {
           aria-label="Menu"
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
-          className="rounded-full text-foreground hover:bg-surface lg:hidden"
+          className={`rounded-full hover:bg-surface lg:hidden ${scrolled ? "text-foreground" : "text-ink-invert"}`}
         >
           {open ? <X /> : <Menu />}
         </Button>

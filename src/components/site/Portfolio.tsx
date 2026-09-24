@@ -1,4 +1,6 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useRef, useState, type CSSProperties } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { Reveal } from "./Reveal";
 import { ArrowUpRight } from "lucide-react";
 
@@ -7,7 +9,7 @@ type Project = {
   category: "Landing Page" | "E-commerce" | "Institucional" | "Portfólio";
   span: string;
   ratio: string;
-  img: string;
+  img?: string;
   href?: string;
 };
 
@@ -17,7 +19,7 @@ const projects: Project[] = [
     category: "Portfólio",
     span: "md:col-span-2",
     ratio: "aspect-[16/9]",
-    img: "https://image.thum.io/get/width/600/crop/400/https://duofreitas.vercel.app",
+    img: "https://image.thum.io/get/width/800/crop/500/noanimate/https://duofreitas.vercel.app",
     href: "https://duofreitas.vercel.app",
   },
   {
@@ -25,7 +27,7 @@ const projects: Project[] = [
     category: "Institucional",
     span: "md:col-span-2",
     ratio: "aspect-[16/9]",
-    img: "https://image.thum.io/get/width/600/crop/400/https://maiarafonsecaestetica.online",
+    img: "https://image.thum.io/get/width/800/crop/500/noanimate/https://maiarafonsecaestetica.online",
     href: "https://maiarafonsecaestetica.online",
   },
   {
@@ -33,42 +35,36 @@ const projects: Project[] = [
     category: "E-commerce",
     span: "md:col-span-2 md:row-span-2",
     ratio: "aspect-[4/5]",
-    img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&auto=format&fit=crop&q=80",
   },
   {
     title: "Landing Page — Consultoria",
     category: "Landing Page",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
   },
   {
     title: "Site Institucional — Clínica",
     category: "Institucional",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=1000&auto=format&fit=crop&q=80",
   },
   {
     title: "Portfólio — Fotógrafo",
     category: "Portfólio",
     span: "md:col-span-2",
     ratio: "aspect-[16/9]",
-    img: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1400&auto=format&fit=crop&q=80",
   },
   {
     title: "App SaaS — Fintech",
     category: "Landing Page",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&auto=format&fit=crop&q=80",
   },
   {
     title: "Landing — Infoproduto",
     category: "Landing Page",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1000&auto=format&fit=crop&q=80",
   },
 ];
 
@@ -76,6 +72,10 @@ const filters = ["Todos", "Landing Page", "E-commerce", "Institucional", "Portf�
 
 export function Portfolio() {
   const [filter, setFilter] = useState<(typeof filters)[number]>("Todos");
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const galleryScale = useTransform(scrollYProgress, [0.05, 0.42], [0.82, 1]);
+  const galleryOpacity = useTransform(scrollYProgress, [0.05, 0.28], [0.35, 1]);
 
   const list = useMemo(
     () => (filter === "Todos" ? projects : projects.filter((p) => p.category === filter)),
@@ -83,7 +83,7 @@ export function Portfolio() {
   );
 
   return (
-    <section id="portfolio" className="relative sand-flow sand-flow--l py-20 md:py-32">
+    <section ref={sectionRef} id="portfolio" className="relative bg-background py-20 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>
@@ -102,24 +102,26 @@ export function Portfolio() {
               </div>
               <div className="flex flex-wrap gap-2">
               {filters.map((f) => (
-                <button
+                <Button
                   key={f}
+                  type="button"
+                  variant="outline"
                   onClick={() => setFilter(f)}
-                  className={`rounded-full border px-4 py-1.5 font-mono-tech text-[10px] uppercase tracking-[0.18em] transition-colors ${
+                  className={`h-8 rounded-full border px-4 font-mono-tech text-[10px] uppercase tracking-[0.18em] transition-colors ${
                     filter === f
                       ? "border-foreground bg-foreground text-background"
                       : "border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"
                   }`}
                 >
                   {f}
-                </button>
+                </Button>
               ))}
               </div>
             </div>
           </Reveal>
         </div>
 
-        <div className="mt-16 grid auto-rows-[minmax(0,1fr)] grid-cols-1 gap-5 md:grid-cols-4">
+        <motion.div style={{ scale: galleryScale, opacity: galleryOpacity }} className="mt-16 grid auto-rows-[minmax(0,1fr)] grid-cols-1 gap-5 md:grid-cols-4">
           {list.map((p, i) => (
             <Reveal key={p.title + filter} delay={i * 80} className={p.span}>
               <a
@@ -129,13 +131,15 @@ export function Portfolio() {
                 className="portfolio-scan-card group relative block h-full overflow-hidden rounded-2xl border border-border bg-card"
                 style={{ "--portfolio-delay": `${i * 80}ms` } as CSSProperties}
               >
-                <div className={`${p.ratio} w-full overflow-hidden`}>
-                  <img
+                <div className={`${p.ratio} gradient-placeholder relative w-full overflow-hidden`}>
+                  {p.img ? <img
                     src={p.img}
-                    alt={p.title}
+                    alt={`Página inicial do projeto ${p.title}`}
                     loading="lazy"
-                    className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                  />
+                    className="h-full w-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                  /> : <div className="absolute inset-0 grid place-items-center p-6 text-center text-ink-invert">
+                    <div><span className="rounded-full border border-ink-invert/20 px-3 py-1 font-mono-tech text-[9px] uppercase tracking-[0.18em]">{p.category}</span><p className="mt-4 text-xl font-bold">{p.title}</p></div>
+                  </div>}
                 </div>
                 <div className="absolute inset-0 z-[1] bg-gradient-to-t from-background via-background/40 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-95" />
                 <div className="absolute inset-x-0 bottom-0 z-[4] flex items-end justify-between p-6">
@@ -154,7 +158,7 @@ export function Portfolio() {
               </a>
             </Reveal>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
-import { Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const testimonials = [
   { name: "Carlos M.", role: "Empresário", text: "A MYSTRATS entregou além do que esperávamos. Em 2 semanas, nosso site estava no ar e já tivemos retorno." },
@@ -71,6 +72,12 @@ export function Testimonials() {
               {String(i + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
             </div>
             <div className="flex gap-2">
+              <Button type="button" size="icon" variant="outline" aria-label="Depoimento anterior" onClick={() => setI((i - 1 + testimonials.length) % testimonials.length)} className="rounded-full">
+                <ArrowLeft />
+              </Button>
+              <Button type="button" size="icon" variant="outline" aria-label="Próximo depoimento" onClick={() => setI((i + 1) % testimonials.length)} className="rounded-full">
+                <ArrowRight />
+              </Button>
               {testimonials.map((_, k) => (
                 <button
                   key={k}
