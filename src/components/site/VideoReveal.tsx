@@ -8,6 +8,7 @@ export function VideoReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoSrc, setVideoSrc] = useState(VIDEO_DESKTOP);
+  const [inView, setInView] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export function VideoReveal() {
         for (const e of entries) {
           if (e.isIntersecting) {
             el.classList.add("video-revealed");
+            setInView(true);
             io.disconnect();
           }
         }
@@ -41,9 +43,11 @@ export function VideoReveal() {
     const video = videoRef.current;
     if (!video) return;
     setReady(false);
+    if (!inView) return;
+    video.src = videoSrc;
     video.load();
     void video.play().catch(() => undefined);
-  }, [videoSrc]);
+  }, [videoSrc, inView]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -64,9 +68,8 @@ export function VideoReveal() {
     );
 
     io.observe(el);
-    play();
     return () => io.disconnect();
-  }, []);
+  }, [inView]);
 
   const handlePlayable = () => {
     setReady(true);
@@ -98,9 +101,8 @@ export function VideoReveal() {
               loop
               muted
               playsInline
-              preload="auto"
+              preload="none"
               poster={VIDEO_POSTER}
-              src={videoSrc}
               onCanPlay={handlePlayable}
               onLoadedData={handlePlayable}
               onStalled={handlePlayable}

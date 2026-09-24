@@ -7,7 +7,7 @@ type Project = {
   category: "Landing Page" | "E-commerce" | "Institucional" | "Portfólio";
   span: string;
   ratio: string;
-  img: string;
+  img?: string;
   href?: string;
 };
 
@@ -17,7 +17,7 @@ const projects: Project[] = [
     category: "Portfólio",
     span: "md:col-span-2",
     ratio: "aspect-[16/9]",
-    img: "https://image.thum.io/get/width/600/crop/400/https://duofreitas.vercel.app",
+    img: "https://image.thum.io/get/width/800/crop/500/noanimate/https://duofreitas.vercel.app",
     href: "https://duofreitas.vercel.app",
   },
   {
@@ -25,7 +25,7 @@ const projects: Project[] = [
     category: "Institucional",
     span: "md:col-span-2",
     ratio: "aspect-[16/9]",
-    img: "https://image.thum.io/get/width/600/crop/400/https://maiarafonsecaestetica.online",
+    img: "https://image.thum.io/get/width/800/crop/500/noanimate/https://maiarafonsecaestetica.online",
     href: "https://maiarafonsecaestetica.online",
   },
   {
@@ -33,42 +33,36 @@ const projects: Project[] = [
     category: "E-commerce",
     span: "md:col-span-2 md:row-span-2",
     ratio: "aspect-[4/5]",
-    img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&auto=format&fit=crop&q=80",
   },
   {
     title: "Landing Page — Consultoria",
     category: "Landing Page",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
   },
   {
     title: "Site Institucional — Clínica",
     category: "Institucional",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=1000&auto=format&fit=crop&q=80",
   },
   {
     title: "Portfólio — Fotógrafo",
     category: "Portfólio",
     span: "md:col-span-2",
     ratio: "aspect-[16/9]",
-    img: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1400&auto=format&fit=crop&q=80",
   },
   {
     title: "App SaaS — Fintech",
     category: "Landing Page",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&auto=format&fit=crop&q=80",
   },
   {
     title: "Landing — Infoproduto",
     category: "Landing Page",
     span: "",
     ratio: "aspect-[4/3]",
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1000&auto=format&fit=crop&q=80",
   },
 ];
 
@@ -129,13 +123,15 @@ export function Portfolio() {
                 className="portfolio-scan-card group relative block h-full overflow-hidden rounded-2xl border border-border bg-card"
                 style={{ "--portfolio-delay": `${i * 80}ms` } as CSSProperties}
               >
-                <div className={`${p.ratio} w-full overflow-hidden`}>
-                  <img
+                <div className={`${p.ratio} gradient-placeholder relative w-full overflow-hidden`}>
+                  {p.img ? <img
                     src={p.img}
-                    alt={p.title}
+                    alt={`Página inicial do projeto ${p.title}`}
                     loading="lazy"
-                    className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                  />
+                    className="h-full w-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                  /> : <div className="absolute inset-0 grid place-items-center p-6 text-center text-ink-invert">
+                    <div><span className="rounded-full border border-ink-invert/20 px-3 py-1 font-mono-tech text-[9px] uppercase tracking-[0.18em]">{p.category}</span><p className="mt-4 text-xl font-bold">{p.title}</p></div>
+                  </div>}
                 </div>
                 <div className="absolute inset-0 z-[1] bg-gradient-to-t from-background via-background/40 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-95" />
                 <div className="absolute inset-x-0 bottom-0 z-[4] flex items-end justify-between p-6">
